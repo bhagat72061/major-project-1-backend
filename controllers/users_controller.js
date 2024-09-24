@@ -1,0 +1,10 @@
+module.exports.profile=function(req,res){
+    //return res.end('<h1>user profile</h1>');
+   return res.render('user_profile',{
+        title: 'user profle'
+})
+}
+
+// module.exports.post=function(req,res){
+//     res.end('<h1>user post</h1>');
+// }
