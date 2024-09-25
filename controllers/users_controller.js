@@ -13,6 +13,11 @@ module.exports.profile=function(req,res){
 
 //render the sign up page
 module.exports.signUp=function(req,res){
+
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
+
     return res.render('user_sign_up',{
         title:"codeial | Sign Up"
     })
@@ -20,6 +25,11 @@ module.exports.signUp=function(req,res){
 
 //render the sign in page
 module.exports.signIn=function(req,res){
+
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
+
     return res.render('user_sign_in',{
         title:"codeial | Sign In"
     })
@@ -75,6 +85,33 @@ module.exports.signIn=function(req,res){
 //     }
 // };
 
+// module.exports.create = async function(req, res) {
+//     console.log(req.body);  // Log the body of the request to the console
+
+//     if (req.body.password !== req.body.confirm_password) {
+//         return res.redirect('back');
+//     }
+
+//     try {
+//         let user = await User.findOne({ email: req.body.email });
+
+//         if (!user) {
+//             // Create a new user with the received body
+//             await User.create({
+//                 name: req.body.name,          // Ensure the name is included
+//                 email: req.body.email,        // Ensure the email is included
+//                 password: req.body.password    // Ensure the password is included
+//             });
+//             return res.redirect('/users/sign-in');
+//         } else {
+//             return res.redirect('back');
+//         }
+//     } catch (err) {
+//         console.log('Error in finding/creating user:', err);
+//         return res.redirect('back');
+//     }
+// };
+
 module.exports.create = async function(req, res) {
     console.log(req.body);  // Log the body of the request to the console
 
@@ -105,4 +142,22 @@ module.exports.create = async function(req, res) {
 
 module.exports.createSession=function(req,res){
     //to do
+    //console.log("Creating session for:", req.user);
+    return res.redirect('/');
+};
+
+
+// module.exports.destroySession=function(req,res){
+//     req.logout();
+//     return res.redirect('/');
+// }
+
+module.exports.destroySession = function(req, res) {
+    req.logout(function(err) {
+        if (err) {
+            console.log('Error logging out:', err);
+            return next(err);  // Handle the error as needed
+        }
+        return res.redirect('/');
+    });
 };
